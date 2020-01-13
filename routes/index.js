@@ -1,8 +1,15 @@
 const express = require('express');
 const app = express();
+// const fs = require('fs');
 
-app.get('/', (req, res) => {
-	res.render('index', { title: 'Saslearn Home'})
-});
-
-module.exports = app;
+module.exports = {
+	getHomePage: (req, res, next) => {
+		res.render('index', { title: 'Saslearn Home'});
+	},
+	getDashboard: (req, res) => {
+		res.render('dashboard', {title: 'Dashboard'})
+	},
+	getRedirect: (req, res) => {
+		res.redirect('/api/dashboard')
+	}
+};

@@ -48,10 +48,12 @@ const login = (req, res) => {
               if(response) {
                 const token = jwt.sign({ email, password }, 'RANDOM_TOKEN_SECRET', { expiresIn: '24h' });
                 
-                res.status(200).json({
-                    email: email,
-                    token: token
-                });
+                // res.status(200).json({
+                //     email: email,
+                //     token: token
+                // });
+
+                res.render("dashboard", {title: 'Dashboard'});
 
               } else {
                console.log('Password is incorrect')

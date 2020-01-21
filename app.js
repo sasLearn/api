@@ -4,8 +4,6 @@ const path = require('path');
 
 const app = express();
 
-const { getHomePage, getDashboard, getRedirect } = require('./routes/index');
-
 const userRoutes = require('./routes/user');
 const courseRoutes = require('./routes/course');
 const orderRoutes = require('./routes/order');
@@ -19,9 +17,9 @@ app.set('view engine', 'ejs'); // configure template engine
 app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
 
 // pages
-app.get('/', getHomePage);
-app.get('/api/dashboard', getDashboard);
-app.get('/api/redirect', getRedirect);
+app.use('/', (req, res) => {
+	res.json({message: 'API homepage'})
+});
 
 app.use('/api/auth', userRoutes);
 app.use('/api/course', courseRoutes);

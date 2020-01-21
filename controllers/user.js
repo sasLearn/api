@@ -48,21 +48,14 @@ const login = (req, res) => {
               if(response) {
                 const token = jwt.sign({ email, password }, 'RANDOM_TOKEN_SECRET', { expiresIn: '24h' });
                 
-                // res.status(200).json({
-                //     email: email,
-                //     token: token
-                // });
-
-                res.render("dashboard", {title: 'Dashboard'});
+                res.redirect("/api/dashboard");
 
               } else {
                console.log('Password is incorrect')
               } 
             });
         } else {
-            res.json({
-                msg: 'email not found'
-            })
+            console.error("Email is not registered")
         }
 
 

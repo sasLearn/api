@@ -11,7 +11,7 @@ const pool = new Pool({
 })
 
 const getUsers = (req, res) => {
-  pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+  pool.query('SELECT * FROM users ORDER BY userId ASC', (error, results) => {
     if (error) {
       throw error
     }
@@ -47,15 +47,16 @@ const login = (req, res) => {
             bcrypt.compare(password, hash, function(err, response) {
               if(response) {
                 const token = jwt.sign({ email, password }, 'RANDOM_TOKEN_SECRET', { expiresIn: '24h' });
-                
-                res.redirect("/api/dashboard");
-
+                res.json({
+                  status: 200,
+                  token
+                })
               } else {
-               console.log('Password is incorrect')
+               res.json({error: 'Password is incorrect'})
               } 
             });
         } else {
-            console.error("Email is not registered")
+            res.json({error: "Email is not registered"})
         }
 
 

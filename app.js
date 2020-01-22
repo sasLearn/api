@@ -17,13 +17,19 @@ app.set('view engine', 'ejs'); // configure template engine
 app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
 
 // pages
-app.use('/', (req, res) => {
-	res.json({message: 'API homepage'})
+app.get('/', (req, res) => {
+	res.json({message: 'Navigate to /api/v1'})
 });
 
-app.use('/api/auth', userRoutes);
-app.use('/api/course', courseRoutes);
-app.use('/api/order', orderRoutes);
+app.get('/api/v1', (req, res) => {
+	res.json({message: 'Learn API version 1'})
+});
+
+const version1 = '/api/v1/';
+
+app.use('/api/v1', userRoutes);
+app.use('/api/v1/course', courseRoutes);
+app.use(`${version1}order`, orderRoutes);
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 

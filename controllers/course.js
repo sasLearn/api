@@ -1,14 +1,24 @@
-const Pool = require('pg').Pool
-const pool = new Pool({
-  user: 'me',
-  host: 'localhost',
-  database: 'api',
-  password: 'password',
-  port: 5432,
+// const Pool = require('pg').Pool
+const pg = require('pg');
+
+// const pool = new Pool({
+//   user: 'me',
+//   host: 'localhost',
+//   database: 'api',
+//   password: 'password',
+//   port: 5432,
+// })
+
+const conString = "postgres://warshzea:R3yColCYNC6RjLLNUx3Ztrfwsfz7SN0N@baasu.db.elephantsql.com:5432/warshzea" //Can be found in the Details page
+const client = new pg.Client(conString);
+client.connect(function(err) {
+  if(err) {
+    return console.error('could not connect to postgres', err);
+  }
 })
 
 const getAllCourses = (req, res) => {
-  pool.query('SELECT * FROM courses ORDER BY courseId ASC', (error, results) => {
+  client.query('SELECT * FROM courses ORDER BY courseId ASC', (error, results) => {
     if (error) {
       throw error
     }
@@ -19,7 +29,7 @@ const getAllCourses = (req, res) => {
 const getSingleCourse = (req, res) => {
   const id = parseInt(req.params.id)
 
-  pool.query('SELECT * FROM courses WHERE courseId = $1', [id], (error, results) => {
+  client.query('SELECT * FROM courses WHERE courseId = $1', [id], (error, results) => {
     if (error) {
       throw error
     }

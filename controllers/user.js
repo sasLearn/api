@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-// const { Pool } = require('pg');
+const { Pool } = require('pg');
 const pg = require('pg');
 
 // const pool = new Pool({
@@ -31,7 +31,7 @@ const getUsers = (req, res) => {
 const signUp = (req, res) => {
     bcrypt.hash(req.body.password, 10, function(err, hash) {
       const { email } = req.body;
-    
+
       client.query('INSERT INTO users (email, password) VALUES ($1, $2)', [email, hash], (error, results) => {
         if (error) {
           res.send(error.detail);
@@ -49,6 +49,7 @@ const login = (req, res) => {
         if (err) {
             return console.log('error', err);
         }
+        let {email, first_name, last_name} = results.rows[0];
 
         if (results.rows.length > 0) {
             const { password: hash } = results.rows[0];
@@ -58,6 +59,9 @@ const login = (req, res) => {
                 const token = jwt.sign({ email, password }, 'RANDOM_TOKEN_SECRET', { expiresIn: '24h' });
                 res.json({
                   status: 200,
+                  email,
+                  first_name,
+                  last_name,
                   token
                 })
               } else {

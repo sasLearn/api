@@ -30,9 +30,9 @@ const getUsers = (req, res) => {
 
 const signUp = (req, res) => {
     bcrypt.hash(req.body.password, 10, function(err, hash) {
-      const { email } = req.body;
+      const { email, first_name, last_name } = req.body;
 
-      client.query('INSERT INTO users (email, password) VALUES ($1, $2)', [email, hash], (error, results) => {
+      client.query('INSERT INTO users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4)', [email, hash, first_name, last_name], (error, results) => {
         if (error) {
           res.send(error.detail);
           return console.log('error', error);
